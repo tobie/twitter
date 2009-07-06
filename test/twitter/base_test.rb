@@ -48,6 +48,15 @@ class BaseTest < Test::Unit::TestCase
         first.user.name.should == 'John Nunemaker'
       end
       
+      should "be able to get mentions" do
+        stub_get('/statuses/mentions.json', 'mentions.json')
+        mentions = @twitter.mentions
+        mentions.size.should == 19
+        sixth = mentions[5]
+        sixth.user.screen_name == 'jhc_'
+        sixth.text.should == 'Why is Gmail implying a folder metaphor with drag and drop when it\'s actually doing labelling/tagging and promoting it as such? (via @tobie)'
+      end
+      
       should "be able to get a status" do
         stub_get('/statuses/show/1441588944.json', 'status.json')
         status = @twitter.status(1441588944)
